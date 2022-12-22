@@ -1,3 +1,4 @@
+<?php
 // ARK forward proxy script
 // Developer: Maarten Coonen, Maastricht University Library.
 
@@ -12,8 +13,6 @@
 // IMPORTANT
 // You need to add a rewrite rule like below to your Apache configuration or .htaccess file to forward incoming ARKs to this local resolver code:
 // RewriteRule ^ark:/([0-9]{5})/([a-zA-Z0-9]+)$ helper/10-ark-fwd-proxy.php?ark=ark:/$1/$2 [PT,L]
-
-<?php
 
 $shoulderLookup = array(
     "a1" => "http://omeka.local",
@@ -45,7 +44,7 @@ if (!isset($_GET["ark"])) {
     } else {
         // Redirect to the server holding this ark
         // exit() is for clients who don't respect the "Location: ..." header
-        header("Location: " . $forwardUrl . "/helper/10-ark-fwd-proxy.php?ark=" . $ark);
+        header("Location: " . $forwardUrl . "/helper/11-local-ark-site-resolver.php?ark=" . $ark);
         exit;
     }
 }
