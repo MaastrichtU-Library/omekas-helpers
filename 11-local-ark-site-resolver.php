@@ -4,22 +4,19 @@
 
 # Developer: Maarten Coonen, Maastricht University Library, 2022.
 # Adapted from the code developed by Gouda Tijd Machine.
-# Many thanks to the Bob Coret, developer at Gouda Tijd Machine & Netwerk Digital Erfgoed, for sharing the code with us.
+# Many thanks to the Bob Coret, developer at Gouda Tijd Machine & Netwerk Digitaal Erfgoed, for sharing the original code with us.
 
+# This local resolver should be used in conjunction with '10-ark-fwd-proxy.php' and works like this:
+# - Incoming (remote) request from './helper/10-ark-fwd-proxy.php' script
+# - The local resolver script looks up the ARK id in the database to determine the site name (slug)
+# - The local resolver script redirects to https://<THIS_HOST>/<$omeka_basepath>/<$slug>/ark:/27364/c1g3pJo
 
-# You need to add a rewrite rule like below to your Apache configuration or .htaccess file to forward incoming ARKs to this local resolver code:
-# RewriteRule ^ark:/99999/([a-zA-Z0-9]+)$ helper/local-ark-site-resolver.php?ark=ark:/99999/$1 [PT,L]
-
-# This local resolver code works like this:
-# 1. Global resolver https://n2t.net/ark:/99999/a12vpho redirects to [302] > https://<BASE URL of your NAAN registration>/ark:/99999/a12vpho
-# 2. RewriteRule redirects to ./helper/local-ark-site-resolver.php?ark=ark:/99999/a12vpho
-# 3. The local resolver redirects to [302] > https://<BASE URL of your NAAN registration>/<$omeka_basepath>/<$slug>/ark:/99999/a12vpho
-
-# Example:
-# 0. https://n2t.net/ark:/99999/a12vpho
-# 1. https://omeka.local/ark:/99999/a12vpho
-# 2. https://omeka.local/helper/local-ark-site-resolver.php?ark=ark:/99999/a12vpho
-# 3. https://omeka.local/s/examplesite/ark:/99999/a12vpho
+# Example end-to-end flow:
+# 0. Client enters https://n2t.net/ark:/27364/c1g3pJo in browser
+# 1. [HTTP 302 by n2t.net]        https://digitalcollections.library.maastrichtuniversity.nl/ark:/27364/c1g3pJo
+# 2. [HTTP 302 by RewriteRule]    https://digitalcollections.library.maastrichtuniversity.nl/helper/10-ark-fwd-proxy.php?ark=ark:/27364/c1g3pJo
+# 3. [HTTP 302 by fwd-proxy]      https://digitalcollections-accept.library.maastrichtuniversity.nl/helper/11-local-ark-site-resolver.php?ark=ark:/27364/c1g3pJo
+# 4. [HTTP 302 by local-resolver] https://digitalcollections-accept.library.maastrichtuniversity.nl/s/examplesite/ark:/27364/c1g3pJo
 
 
 // Given the URL http://omeka.local/s/examplesite/ark:/99999/a12vpho
@@ -67,17 +64,21 @@ if (isset($_GET["ark"])) {
 			} else {
 				header("Location: " . $omeka_basepath . $slug . "/collection/" . $ark);
 			}
+            // exit() is for clients who don't respect the "Location: ..." header
 			exit;
 		} else {
 			$slug=$result["slug"];
+            // exit() is for clients who don't respect the "Location: ..." header
 			header("Location: " . $omeka_basepath . $slug . "/" . $ark);
-			exit;
+            exit;
 		}
 	}
 
 	header("Location: " . $omeka_basepath);
+    // exit() is for clients who don't respect the "Location: ..." header
+    exit;
 
 } else {
 	echo "<h1>Missing ARK</h1>";
 }
-exit;
+?>
