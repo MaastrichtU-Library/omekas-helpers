@@ -4,7 +4,7 @@
 
 # Developer: Maarten Coonen, Maastricht University Library, 2022.
 # Adapted from the code developed by Gouda Tijd Machine.
-# Many thanks to the Bob Coret, developer at Gouda Tijd Machine & Netwerk Digitaal Erfgoed, for sharing the original code with us.
+# Many thanks to Bob Coret, developer at Gouda Tijd Machine & Netwerk Digitaal Erfgoed, for sharing the original code with us.
 
 # This local resolver should be used in conjunction with '10-ark-fwd-proxy.php' and works like this:
 # - Incoming (remote) request from './helper/10-ark-fwd-proxy.php' script
