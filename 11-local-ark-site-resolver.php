@@ -77,15 +77,24 @@ if (isset($_GET["ark"])) {
 			$stmt->bind_param("s", $result["resource_id"]);
 			$stmt->execute();
 			$result2 = $stmt->get_result()->fetch_assoc();
-			
-			$slug = $result2["slug"];
-			$item_set_id = $result2["item_set_id"];
+
+			# Check if item set contains items and redirect if possible
+			if (!is_null($result2)) {
+				$slug = $result2["slug"];
+				$item_set_id = $result2["item_set_id"];
+
+				// Perform the redirect to the item-set
+				header("Location: " . $omeka_basepath . $slug . "/item-set/" . $item_set_id);
+
+				// exit() is for clients who don't respect the "Location: ..." header
+				exit;
+			} else {
+				echo "<h1>Error: empty item set</h1>";
+				echo "<p>The item set with persistent identifier " . $ark . " exists, but does not have any items attached.</p>";
+				exit;
+			}
 					
-			// Perform the redirect to the item-set
-			header("Location: " . $omeka_basepath . $slug . "/item-set/" . $item_set_id);
-			
-			// exit() is for clients who don't respect the "Location: ..." header
-			exit;
+
 		} else {
 			$slug = $result["slug"];
 			$item_id = $result["resource_id"];
@@ -106,5 +115,6 @@ if (isset($_GET["ark"])) {
 
 } else {
 	echo "<h1>Missing ARK</h1>";
+	echo "Please check your URL and make sure it looks similar to 'http://your.url.to.omeka/helper/11-local-ark-site-resolver.php?ark=ark:/99999/a1MGfH7'";
 }
 ?>
