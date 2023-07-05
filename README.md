@@ -24,7 +24,6 @@ The `11-local-ark-site-resolver.php` script must be present **at all target serv
   - Example: the NAAN for Maastricht University Library is https://n2t.net/ark:/27364
 - [Omeka S](https://omeka.org/s/download/) version 3.2.0 or higher
 - [ARK module](https://github.com/Daniel-KM/Omeka-S-module-Ark)
-- [CleanUrl module](https://github.com/Daniel-KM/Omeka-S-module-CleanUrl)
 - Webserver compatible with rewrite rules. This readme is written for Apache. Similar approaches exist for Nginx and other webservers.
 
 ### Usage
