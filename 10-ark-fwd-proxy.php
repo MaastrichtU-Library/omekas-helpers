@@ -30,7 +30,8 @@ $shoulderLookup = array(
 //    "a1" => "https://digitalcollections-develop.library.maastrichtuniversity.nl",
     "b1" => "https://digitalcollections-test.library.maastrichtuniversity.nl",
     "c1" => "https://digitalcollections-accept.library.maastrichtuniversity.nl",
-    "d1" => "https://digitalcollections.library.maastrichtuniversity.nl"
+    "d1" => "https://digitalcollections.library.maastrichtuniversity.nl",
+    "e1" => "https://plakkaten.library.maastrichtuniversity.nl"
 );
 
 # RewriteRule in .htaccess zorgt dat we op dit script uitkomen
